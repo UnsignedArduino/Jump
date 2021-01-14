@@ -94,6 +94,14 @@ function clear_map () {
         value.destroy()
     }
 }
+scene.onOverlapTile(SpriteKind.MovingPlatform, myTiles.transparency8, function (sprite, location) {
+    tiles.setTileAt(location, myTiles.tile3)
+    tiles.setWallAt(location, true)
+    timer.after(500, function () {
+        tiles.setTileAt(location, myTiles.transparency8)
+        tiles.setWallAt(location, false)
+    })
+})
 function jump (sprite: Sprite, gravity: number, pixels: number) {
     sprite.vy = Math.sqrt(2 * (gravity * pixels)) * -1
 }
@@ -109,7 +117,7 @@ function make_random (left: number, width: number, height: number) {
     } else if (local_random < 75) {
         make_trampoline(left, width, height)
     } else {
-        make_platform(left, width, height)
+        make_moving_platform(left, width, height)
     }
 }
 function animate_player (sprite: Sprite) {
@@ -222,6 +230,41 @@ function animate_player (sprite: Sprite) {
     character.rule(Predicate.MovingDown)
     )
 }
+function make_moving_platform (left: number, width: number, height: number) {
+    sprite_moving_platform = sprites.create(img`
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        7 7 7 7 7 7 7 7 
+        `, SpriteKind.MovingPlatform)
+    tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
+    sprite_moving_platform.left = left * 8
+    sprite_moving_platform.setFlag(SpriteFlag.Invisible, true)
+    local_path = "h " + (156 - sprite_moving_platform.x)
+    local_time = (156 - sprite_moving_platform.x) / 8 * 100
+    animation.runMovementAnimation(
+    sprite_moving_platform,
+    local_path,
+    local_time,
+    false
+    )
+    timer.after(local_time, function () {
+        local_path = "h -152 h 152"
+        animation.runMovementAnimation(
+        sprite_moving_platform,
+        local_path,
+        5000,
+        true
+        )
+    })
+}
+let local_time = 0
+let local_path = ""
+let sprite_moving_platform: Sprite = null
 let local_random = 0
 let sprite_player: Sprite = null
 let jumps_made = 0
