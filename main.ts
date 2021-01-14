@@ -118,13 +118,20 @@ scene.onOverlapTile(SpriteKind.MovingPlatform, myTiles.transparency8, function (
         tiles.setWallAt(location, false)
     })
 })
+function make_transition (left: number, width: number, height: number) {
+    for (let index = 0; index <= width - 1; index++) {
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), myTiles.tile5)
+        tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
+    }
+}
 function jump (sprite: Sprite, gravity: number, pixels: number) {
     sprite.vy = Math.sqrt(2 * (gravity * pixels)) * -1
 }
 function make_map (num_platforms: number, width: number, start_y: number, space: number) {
-    for (let index = 0; index <= num_platforms - 1; index++) {
+    for (let index = 0; index <= num_platforms - 2; index++) {
         make_random(randint(0, 20 - width), width, 60 - (index * space + start_y))
     }
+    make_transition(randint(0, 20 - width), width, 60 - ((num_platforms - 1) * space + start_y))
 }
 function make_random (left: number, width: number, height: number) {
     local_random = randint(0, 100)
@@ -364,7 +371,7 @@ tiles.setSmallTilemap(tiles.createTilemap(hex`14003c0000000000000000000000000000
 scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
-make_map(19, 5, 5, 3)
+make_map(18, 5, 5, 3)
 fade_out(2000, false)
 game.onUpdateInterval(1000, function () {
     effects.clouds.startScreenEffect(500)
