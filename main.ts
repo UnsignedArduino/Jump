@@ -4,11 +4,20 @@ namespace SpriteKind {
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Bottom)) {
         jumps_made = 0
+        if (sprite.tileKindAt(TileDirection.Bottom, myTiles.tile2)) {
+            jump(sprite_player, constants_gravity, 64)
+        }
     }
 })
 function make_platform (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), myTiles.tile1)
+        tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
+    }
+}
+function make_trampoline (left: number, width: number, height: number) {
+    for (let index = 0; index <= width - 1; index++) {
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), myTiles.tile2)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
@@ -98,7 +107,7 @@ function make_random (left: number, width: number, height: number) {
     if (local_random < 50) {
         make_platform(left, width, height)
     } else if (local_random < 75) {
-        make_platform(left, width, height)
+        make_trampoline(left, width, height)
     } else {
         make_platform(left, width, height)
     }
