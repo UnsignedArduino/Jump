@@ -1,6 +1,12 @@
 namespace SpriteKind {
     export const MovingPlatform = SpriteKind.create()
 }
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (jumps_made < constants_jumps_max) {
+        jump(sprite_player, constants_gravity, 32)
+        jumps_made += 1
+    }
+})
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Bottom)) {
         jumps_made = 0
@@ -419,5 +425,5 @@ traveled_height = sprite_player.y
 make_map(18, width, 5, 3)
 fade_out(2000, false)
 game.onUpdateInterval(1000, function () {
-    effects.clouds.startScreenEffect(200)
+    effects.clouds.startScreenEffect(100)
 })
