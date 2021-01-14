@@ -6,6 +6,10 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         jumps_made = 0
         if (sprite.tileKindAt(TileDirection.Bottom, myTiles.tile2)) {
             jump(sprite_player, constants_gravity, 64)
+            tiles.setTileAt(location, myTiles.tile4)
+            timer.after(100, function () {
+                tiles.setTileAt(location, myTiles.tile2)
+            })
         }
     }
 })
@@ -94,6 +98,18 @@ function clear_map () {
         sprite.destroy()
     }
 }
+function fade_out (time: number, block: boolean) {
+    color.startFade(color.Black, color.originalPalette, time)
+    if (block) {
+        color.clearFadeEffect()
+    }
+}
+function fade_in (time: number, block: boolean) {
+    color.startFade(color.originalPalette, color.Black, time)
+    if (block) {
+        color.clearFadeEffect()
+    }
+}
 scene.onOverlapTile(SpriteKind.MovingPlatform, myTiles.transparency8, function (sprite, location) {
     tiles.setTileAt(location, myTiles.tile3)
     tiles.setWallAt(location, true)
@@ -105,9 +121,9 @@ scene.onOverlapTile(SpriteKind.MovingPlatform, myTiles.transparency8, function (
 function jump (sprite: Sprite, gravity: number, pixels: number) {
     sprite.vy = Math.sqrt(2 * (gravity * pixels)) * -1
 }
-function make_map (num_platforms: number, width: number, start_y: number) {
+function make_map (num_platforms: number, width: number, start_y: number, space: number) {
     for (let index = 0; index <= num_platforms - 1; index++) {
-        make_random(randint(0, 20 - width), width, 60 - (index * 3 + start_y))
+        make_random(randint(0, 20 - width), width, 60 - (index * space + start_y))
     }
 }
 function make_random (left: number, width: number, height: number) {
@@ -267,6 +283,9 @@ let constants_gravity = 0
 constants_gravity = 400
 constants_jumps_max = 2
 jumps_made = 0
+color.setPalette(
+color.Black
+)
 sprite_player = sprites.create(img`
     . 8 8 8 8 8 . . 
     8 8 8 8 8 8 8 . 
@@ -345,7 +364,8 @@ tiles.setSmallTilemap(tiles.createTilemap(hex`14003c0000000000000000000000000000
 scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
-make_map(10, 5, 5)
+make_map(19, 5, 5, 3)
+fade_out(2000, false)
 game.onUpdateInterval(1000, function () {
     effects.clouds.startScreenEffect(500)
 })
