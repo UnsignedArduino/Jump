@@ -90,8 +90,8 @@ function clear_map () {
         ....................
         ....................
         `, [myTiles.transparency8], TileScale.Eight))
-    for (let value of sprites.allOfKind(SpriteKind.MovingPlatform)) {
-        value.destroy()
+    for (let sprite of sprites.allOfKind(SpriteKind.MovingPlatform)) {
+        sprite.destroy()
     }
 }
 scene.onOverlapTile(SpriteKind.MovingPlatform, myTiles.transparency8, function (sprite, location) {
@@ -232,37 +232,31 @@ function animate_player (sprite: Sprite) {
 }
 function make_moving_platform (left: number, width: number, height: number) {
     sprite_moving_platform = sprites.create(img`
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
-        7 7 7 7 7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
         `, SpriteKind.MovingPlatform)
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
     sprite_moving_platform.left = left * 8
     sprite_moving_platform.setFlag(SpriteFlag.Invisible, true)
-    local_path = "h " + (156 - sprite_moving_platform.x)
-    local_time = (156 - sprite_moving_platform.x) / 8 * 100
+    local_path = ""
+    for (let index = 0; index < (156 - sprite_moving_platform.left) / 8; index++) {
+        local_path = "" + local_path + " h " + "8"
+    }
+    for (let index = 0; index < 20; index++) {
+        local_path = "" + local_path + " h " + "-8"
+    }
+    for (let index = 0; index < Math.abs(sprite_moving_platform.left - 4) / 8; index++) {
+        local_path = "" + local_path + " h " + "8"
+    }
     animation.runMovementAnimation(
     sprite_moving_platform,
     local_path,
-    local_time,
-    false
+    5000,
+    true
     )
-    timer.after(local_time, function () {
-        local_path = "h -152 h 152"
-        animation.runMovementAnimation(
-        sprite_moving_platform,
-        local_path,
-        5000,
-        true
-        )
-    })
 }
-let local_time = 0
 let local_path = ""
 let sprite_moving_platform: Sprite = null
 let local_random = 0
@@ -351,4 +345,4 @@ tiles.setSmallTilemap(tiles.createTilemap(hex`14003c0000000000000000000000000000
 scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
-make_map(3, 5, 5)
+make_map(10, 5, 5)
