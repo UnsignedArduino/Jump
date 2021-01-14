@@ -7,7 +7,8 @@
         "character-animations": "github:riknoll/character-animations#v0.3.0",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
         "tilemaps": "github:microsoft/pxt-tilemaps#v1.10.0",
-        "animation": "*"
+        "animation": "*",
+        "Color Fading": "github:jwunderl/pxt-color#v0.2.0"
     },
     "files": [
         "main.blocks",

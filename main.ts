@@ -346,4 +346,6 @@ scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 make_map(10, 5, 5)
-effects.clouds.startScreenEffect()
+game.onUpdateInterval(1000, function () {
+    effects.clouds.startScreenEffect(500)
+})
