@@ -14,13 +14,13 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
             traveled_height = sprite_player.y
             info.changeScoreBy(1)
         }
-        if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`tile2`)) {
+        if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`trampoline`)) {
             jump(sprite_player, constants_gravity, 64)
-            tiles.setTileAt(location, assets.tile`tile4`)
+            tiles.setTileAt(location, assets.tile`activated_trampoline`)
             timer.after(100, function () {
-                tiles.setTileAt(location, assets.tile`tile2`)
+                tiles.setTileAt(location, assets.tile`trampoline`)
             })
-        } else if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`tile5`)) {
+        } else if (sprite.tileKindAt(TileDirection.Bottom, assets.tile`transition_block`)) {
             timer.throttle("switch_boards", 5000, function () {
                 timer.background(function () {
                     enable_controls(false)
@@ -38,16 +38,26 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
 })
 function make_platform (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
-        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`tile1`)
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`block`)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
 function make_trampoline (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
-        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`tile2`)
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`trampoline`)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky`, function (sprite, location) {
+    sprite.setFlag(SpriteFlag.Ghost, true)
+    enable_controls(false)
+    timer.after(500, function () {
+        sprite.destroy()
+    })
+    timer.after(2000, function () {
+        game.over(false)
+    })
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumps_made < constants_jumps_max) {
         jump(sprite_player, constants_gravity, 32)
@@ -55,13 +65,13 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function clear_map () {
-    tiles.setSmallTilemap(tilemap`level1`)
+    tiles.setSmallTilemap(tilemap`next_levels`)
     for (let sprite of sprites.allOfKind(SpriteKind.MovingPlatform)) {
         sprite.destroy()
     }
 }
 scene.onOverlapTile(SpriteKind.MovingPlatform, assets.tile`transparency8`, function (sprite, location) {
-    tiles.setTileAt(location, assets.tile`tile3`)
+    tiles.setTileAt(location, assets.tile`moving_platform`)
     tiles.setWallAt(location, true)
     timer.after(500, function () {
         tiles.setTileAt(location, assets.tile`transparency8`)
@@ -82,20 +92,10 @@ function fade_in (time: number, block: boolean) {
 }
 function make_transition (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
-        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`tile5`)
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`transition_block`)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`tile6`, function (sprite, location) {
-    sprite.setFlag(SpriteFlag.Ghost, true)
-    enable_controls(false)
-    timer.after(500, function () {
-        sprite.destroy()
-    })
-    timer.after(2000, function () {
-        game.over(false)
-    })
-})
 function enable_controls (enable: boolean) {
     if (enable) {
         controller.moveSprite(sprite_player, 100, 0)
@@ -129,120 +129,43 @@ function make_random (left: number, width: number, height: number) {
 function animate_player (sprite: Sprite) {
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . f 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . . . . . 6 . . 
-        . . . . . 6 . . 
-        `,img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . f 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 . . . . . . 
-        . 6 . . . . . . 
-        `],
+    assets.animation`walk_left`,
     200,
     character.rule(Predicate.MovingLeft)
     )
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . f 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 . . . 6 . . 
-        . 6 . . . 6 . . 
-        `],
+    assets.animation`look_left`,
     200,
     character.rule(Predicate.NotMoving, Predicate.FacingLeft)
     )
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . 6 6 f 6 f . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 . . . . . . 
-        . 6 . . . . . . 
-        `,img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . 6 6 f 6 f . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . . . . . 6 . . 
-        . . . . . 6 . . 
-        `],
+    assets.animation`walk_right`,
     200,
     character.rule(Predicate.MovingRight)
     )
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . 6 6 f 6 f . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 . . . 6 . . 
-        . 6 . . . 6 . . 
-        `],
+    assets.animation`look_left0`,
     200,
     character.rule(Predicate.NotMoving, Predicate.FacingRight)
     )
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . 6 f 6 f 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 . . . 6 . . 
-        . 6 . . . 6 . . 
-        `],
+    assets.animation`look_straight`,
     200,
     character.rule(Predicate.MovingUp)
     )
     character.loopFrames(
     sprite,
-    [img`
-        . 8 8 8 8 8 . . 
-        8 8 8 8 8 8 8 . 
-        . 6 6 6 6 6 . . 
-        . 6 f 6 f 6 . . 
-        . 6 6 6 6 6 . . 
-        . 6 6 f 6 6 . . 
-        . 6 . . . 6 . . 
-        . 6 . . . 6 . . 
-        `],
+    assets.animation`look_down`,
     200,
     character.rule(Predicate.MovingDown)
     )
 }
 function make_moving_platform (left: number, width: number, height: number) {
-    sprite_moving_platform = sprites.create(img`
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        `, SpriteKind.MovingPlatform)
+    sprite_moving_platform = sprites.create(assets.image`moving_platform_head`, SpriteKind.MovingPlatform)
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
     sprite_moving_platform.left = left * 8
     sprite_moving_platform.setFlag(SpriteFlag.Invisible, true)
@@ -281,21 +204,12 @@ width = 5
 color.setPalette(
 color.Black
 )
-sprite_player = sprites.create(img`
-    . 8 8 8 8 8 . . 
-    8 8 8 8 8 8 8 . 
-    . 6 f 6 f 6 . . 
-    . 6 6 6 6 6 . . 
-    . 6 6 f 6 6 . . 
-    . 6 6 6 6 6 . . 
-    . 6 . . . 6 . . 
-    . 6 . . . 6 . . 
-    `, SpriteKind.Player)
+sprite_player = sprites.create(assets.image`front_facing`, SpriteKind.Player)
 animate_player(sprite_player)
 enable_controls(true)
 sprite_player.ay = constants_gravity
 info.setScore(0)
-tiles.setSmallTilemap(tilemap`level2`)
+tiles.setSmallTilemap(tilemap`starting_level`)
 scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
