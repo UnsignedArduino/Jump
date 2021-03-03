@@ -32,6 +32,7 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     enable_controls(true)
                     width = Math.max(width - 0.25, 3)
                     moving_platform_speed = Math.max(moving_platform_speed - 1000, 3000)
+                    levels_passed += 1
                 })
             })
         }
@@ -246,6 +247,7 @@ traveled_height = 0
 width = 5
 moving_platform_speed = 10000
 double_platform_chance = 50
+let levels_passed = 0
 color.setPalette(
 color.Black
 )
@@ -261,6 +263,9 @@ tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 traveled_height = sprite_player.y
 make_map(18, width, 5, 3)
 fade_out(2000, false)
-game.onUpdateInterval(1000, function () {
-    effects.clouds.startScreenEffect(100)
+forever(function () {
+    if (levels_passed < 5) {
+        effects.clouds.startScreenEffect(100)
+    }
+    pause(1000 + levels_passed * 500)
 })
