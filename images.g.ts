@@ -21,6 +21,17 @@ namespace myImages {
 . 6 . . . 6 . . 
 . 6 . . . 6 . . 
 `;
+            case "image3":
+            case "coin":return img`
+. . b b b b . . 
+. b 5 5 5 5 b . 
+b 5 d 3 3 d 5 b 
+b 5 3 5 5 1 5 b 
+c 5 3 5 5 1 d c 
+c d d 1 1 d d c 
+. f d d d d f . 
+. . f f f f . . 
+`;
         }
         return null;
     })
@@ -110,6 +121,30 @@ namespace myImages {
 . 6 6 f 6 6 . . 
 . 6 . . . 6 . . 
 . 6 . . . 6 . . 
+`];
+            case "coin_bobbing":
+            case "anim7":return [img`
+. . . . . . . . 
+. . . . . . . . 
+. . b b b b . . 
+. b 5 5 5 5 b . 
+b 5 d 3 3 d 5 b 
+b 5 3 5 5 1 5 b 
+c 5 3 5 5 1 d c 
+c d d 1 1 d d c 
+. f d d d d f . 
+. . f f f f . . 
+`, img`
+. . . . . . . . 
+. . b b b b . . 
+. b 5 5 5 5 b . 
+b 5 d 3 3 d 5 b 
+b 5 3 5 5 1 5 b 
+c 5 3 5 5 1 d c 
+c d d 1 1 d d c 
+. f d d d d f . 
+. . f f f f . . 
+. . . . . . . . 
 `];
         }
         return null;

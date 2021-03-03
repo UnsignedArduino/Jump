@@ -9,6 +9,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "front_facing"
     },
+    "image3": {
+        "data": "hwQIAAgAAAAAu8wAsFXVD1s90/1bUxX9W1MV/Vsd0f2wVd0PALvMAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "coin"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",
@@ -50,6 +55,13 @@
         "mimeType": "application/mkcd-animation",
         "data": "YzgwMDA4MDAwODAwMDEwMDgwODg4ODAwODg4ODg4MDg2MDY2NjYwMDYwNmY2ZjAwNjA2NjY2MDA2MGY2NjYwMDYwMDA2MDAwNjAwMDYwMDA=",
         "displayName": "look_down"
+    },
+    "anim7": {
+        "namespace": "myAnimations",
+        "id": "anim7",
+        "mimeType": "application/mkcd-animation",
+        "data": "ZjQwMTA4MDAwYTAwMDIwMDAwMDAwMDAwMDAwMDAwMDAwMGJiYmIwMGIwNTU1NTBiNWIzZGQzYjU1YjUzMTViNTVjNTMxNWNkZGMxZGQxY2RmMGRkZGQwZjAwZmZmZjAwMDAwMDAwMDAwMGJiYmIwMGIwNTU1NTBiNWIzZGQzYjU1YjUzMTViNTVjNTMxNWNkZGMxZGQxY2RmMGRkZGQwZjAwZmZmZjAwMDAwMDAwMDA=",
+        "displayName": "coin_bobbing"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",

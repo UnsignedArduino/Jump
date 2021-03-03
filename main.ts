@@ -69,6 +69,9 @@ function clear_map () {
     for (let sprite of sprites.allOfKind(SpriteKind.MovingPlatform)) {
         sprite.destroy()
     }
+    for (let sprite of sprites.allOfKind(SpriteKind.Food)) {
+        sprite.destroy()
+    }
 }
 scene.onOverlapTile(SpriteKind.MovingPlatform, assets.tile`transparency8`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`moving_platform`)
@@ -83,6 +86,17 @@ function fade_out (time: number, block: boolean) {
     if (block) {
         color.pauseUntilFadeDone()
     }
+}
+function make_coin (col: number, row: number) {
+    sprite_coin = sprites.create(assets.image`coin`, SpriteKind.Food)
+    animation.runImageAnimation(
+    sprite_coin,
+    assets.animation`coin_bobbing`,
+    500,
+    true
+    )
+    tiles.placeOnTile(sprite_coin, tiles.getTileLocation(col, row))
+    sprite_coin.y += -3
 }
 function fade_in (time: number, block: boolean) {
     color.startFade(color.originalPalette, color.Black, time)
@@ -116,14 +130,24 @@ function make_map (num_platforms: number, width: number, start_y: number, space:
     make_transition(randint(0, 20 - width), width, 60 - ((num_platforms - 1) * space + start_y))
     return local_start + Math.round(width / 2)
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    otherSprite.destroy(effects.trail, 100)
+    info.changeScoreBy(1)
+})
 function make_random (left: number, width: number, height: number) {
     local_random = randint(0, 100)
     if (local_random < 50) {
         make_platform(left, width, height)
+        if (Math.percentChance(3)) {
+            make_coin(randint(left + 1, left + width - 1), height - 1)
+        }
     } else if (local_random < 75) {
         make_trampoline(left, width, height)
+        if (Math.percentChance(3)) {
+            make_coin(randint(left + 1, left + width - 1), height - 1)
+        }
     } else {
-        make_moving_platform(left, width, height)
+        make_moving_platform(left, width, height, 5000)
     }
 }
 function animate_player (sprite: Sprite) {
@@ -164,7 +188,7 @@ function animate_player (sprite: Sprite) {
     character.rule(Predicate.MovingDown)
     )
 }
-function make_moving_platform (left: number, width: number, height: number) {
+function make_moving_platform (left: number, width: number, height: number, time: number) {
     sprite_moving_platform = sprites.create(assets.image`moving_platform_head`, SpriteKind.MovingPlatform)
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
     sprite_moving_platform.left = left * 8
@@ -182,7 +206,7 @@ function make_moving_platform (left: number, width: number, height: number) {
     animation.runMovementAnimation(
     sprite_moving_platform,
     local_path,
-    5000,
+    time,
     true
     )
 }
@@ -190,6 +214,7 @@ let local_path = ""
 let sprite_moving_platform: Sprite = null
 let local_random = 0
 let local_start = 0
+let sprite_coin: Sprite = null
 let sprite_player: Sprite = null
 let width = 0
 let traveled_height = 0
