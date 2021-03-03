@@ -118,6 +118,17 @@ function enable_controls (enable: boolean) {
         controller.moveSprite(sprite_player, 0, 0)
     }
 }
+controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+    for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
+        tiles.setTileAt(location, assets.tile`transparency8`)
+        tiles.setWallAt(location, false)
+    }
+    scene.systemMenu.showSystemMenu()
+for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
+        tiles.setTileAt(location, assets.tile`transparency8`)
+        tiles.setWallAt(location, false)
+    }
+})
 function jump (sprite: Sprite, gravity: number, pixels: number) {
     sprite.vy = Math.sqrt(2 * (gravity * pixels)) * -1
 }
