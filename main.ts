@@ -153,6 +153,9 @@ function make_random (left: number, width: number, height: number) {
         if (Math.percentChance(3)) {
             make_coin(randint(left + 1, left + width - 1), height - 1)
         }
+        if (Math.percentChance(double_platform_chance)) {
+            make_platform(left + randint(width, 20), width, height)
+        }
     } else if (local_random < 75) {
         make_trampoline(left, width, height)
         if (Math.percentChance(3)) {
@@ -229,6 +232,7 @@ let local_random = 0
 let local_start = 0
 let sprite_coin: Sprite = null
 let sprite_player: Sprite = null
+let double_platform_chance = 0
 let moving_platform_speed = 0
 let width = 0
 let traveled_height = 0
@@ -241,6 +245,7 @@ jumps_made = 0
 traveled_height = 0
 width = 5
 moving_platform_speed = 10000
+double_platform_chance = 50
 color.setPalette(
 color.Black
 )
