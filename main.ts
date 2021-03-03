@@ -31,6 +31,7 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     fade_out(2000, false)
                     enable_controls(true)
                     width = Math.max(width - 0.25, 3)
+                    moving_platform_speed = Math.max(moving_platform_speed - 1000, 3000)
                 })
             })
         }
@@ -76,7 +77,7 @@ function clear_map () {
 scene.onOverlapTile(SpriteKind.MovingPlatform, assets.tile`transparency8`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`moving_platform`)
     tiles.setWallAt(location, true)
-    timer.after(500, function () {
+    timer.after(sprites.readDataNumber(sprite, "block_delay"), function () {
         tiles.setTileAt(location, assets.tile`transparency8`)
         tiles.setWallAt(location, false)
     })
@@ -147,7 +148,7 @@ function make_random (left: number, width: number, height: number) {
             make_coin(randint(left + 1, left + width - 1), height - 1)
         }
     } else {
-        make_moving_platform(left, width, height, 5000)
+        make_moving_platform(left, width, height, moving_platform_speed)
     }
 }
 function animate_player (sprite: Sprite) {
@@ -193,6 +194,7 @@ function make_moving_platform (left: number, width: number, height: number, time
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
     sprite_moving_platform.left = left * 8
     sprite_moving_platform.setFlag(SpriteFlag.Invisible, true)
+    sprites.setDataNumber(sprite_moving_platform, "block_delay", time / 10)
     local_path = ""
     for (let index = 0; index < (156 - sprite_moving_platform.left) / 8; index++) {
         local_path = "" + local_path + " h " + "8"
@@ -216,6 +218,7 @@ let local_random = 0
 let local_start = 0
 let sprite_coin: Sprite = null
 let sprite_player: Sprite = null
+let moving_platform_speed = 0
 let width = 0
 let traveled_height = 0
 let jumps_made = 0
@@ -226,6 +229,7 @@ constants_jumps_max = 2
 jumps_made = 0
 traveled_height = 0
 width = 5
+moving_platform_speed = 10000
 color.setPalette(
 color.Black
 )
