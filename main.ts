@@ -26,7 +26,7 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     enable_controls(false)
                     fade_in(2000, true)
                     clear_map()
-                    tiles.placeOnTile(sprite_player, tiles.getTileLocation(make_map(19, Math.floor(width), 3, 3), tiles.tilemapRows() - 4))
+                    tiles.placeOnTile(sprite_player, tiles.getTileLocation(make_sky_map(19, Math.floor(width), 3, 3), tiles.tilemapRows() - 4))
                     traveled_height = sprite_player.y
                     fade_out(2000, false)
                     enable_controls(true)
@@ -67,7 +67,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function clear_map () {
-    tiles.setSmallTilemap(tilemap`next_levels`)
+    tiles.setSmallTilemap(tilemap`sky`)
     for (let sprite of sprites.allOfKind(SpriteKind.MovingPlatform)) {
         sprite.destroy()
     }
@@ -106,6 +106,16 @@ function fade_in (time: number, block: boolean) {
         color.pauseUntilFadeDone()
     }
 }
+function make_sky_map (num_platforms: number, width: number, start_y: number, space: number) {
+    let index = 0
+    local_start = randint(0, 20 - width)
+    make_platform(local_start, width, 60 - (index * space + start_y))
+    for (let index = 0; index <= num_platforms - 3; index++) {
+        make_random(randint(0, 20 - width), width, 60 - ((index + 1) * space + start_y))
+    }
+    make_transition(randint(0, 20 - width), width, 60 - ((num_platforms - 1) * space + start_y))
+    return local_start + Math.round(width / 2)
+}
 function make_transition (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`transition_block`)
@@ -132,16 +142,6 @@ for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
 })
 function jump (sprite: Sprite, gravity: number, pixels: number) {
     sprite.vy = Math.sqrt(2 * (gravity * pixels)) * -1
-}
-function make_map (num_platforms: number, width: number, start_y: number, space: number) {
-    let index = 0
-    local_start = randint(0, 20 - width)
-    make_platform(local_start, width, 60 - (index * space + start_y))
-    for (let index = 0; index <= num_platforms - 3; index++) {
-        make_random(randint(0, 20 - width), width, 60 - ((index + 1) * space + start_y))
-    }
-    make_transition(randint(0, 20 - width), width, 60 - ((num_platforms - 1) * space + start_y))
-    return local_start + Math.round(width / 2)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     otherSprite.destroy(effects.trail, 100)
@@ -261,7 +261,7 @@ scene.setBackgroundColor(9)
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 traveled_height = sprite_player.y
-make_map(18, width, 5, 3)
+make_sky_map(18, width, 5, 3)
 fade_out(2000, false)
 forever(function () {
     if (levels_passed < 5) {
