@@ -27,8 +27,12 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     enable_controls(false)
                     fade_in(2000, true)
                     clear_map()
-                    tiles.placeOnTile(sprite_player, tiles.getTileLocation(make_map(19, Math.floor(width), 3, 3), tiles.tilemapRows() - 4))
+                    local_col = make_map(19, Math.floor(width), 3, 3)
+                    tiles.placeOnTile(sprite_player, tiles.getTileLocation(local_col, tiles.tilemapRows() - 4))
                     traveled_height = sprite_player.y
+                    if (levels_passed == 0) {
+                        make_sign(local_col, tiles.tilemapRows() - 4, "Be careful!\\n" + "If you fall below this platform, you will die!" + "" + "" + "")
+                    }
                     fade_out(2000, false)
                     enable_controls(true)
                     width = Math.max(width - 0.25, 3)
@@ -265,7 +269,9 @@ let local_start = 0
 let local_sprites_overlapped: Sprite[] = []
 let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
+let local_col = 0
 let sprite_player: Sprite = null
+let levels_passed = 0
 let double_platform_chance = 0
 let moving_platform_speed = 0
 let width = 0
@@ -280,7 +286,7 @@ traveled_height = 0
 width = 5
 moving_platform_speed = 10000
 double_platform_chance = 50
-let levels_passed = 0
+levels_passed = 0
 color.setPalette(
 color.Black
 )
