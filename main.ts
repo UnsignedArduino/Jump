@@ -50,7 +50,9 @@ function make_platform (left: number, width: number, height: number) {
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
+    if (sprite_player.overlapsWith(sprite_customization_icon)) {
+    	
+    } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
             tiles.setWallAt(location, false)
@@ -270,6 +272,7 @@ let local_sprites_overlapped: Sprite[] = []
 let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_col = 0
+let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
 let levels_passed = 0
 let double_platform_chance = 0
@@ -281,6 +284,8 @@ let constants_jumps_max = 0
 let constants_gravity = 0
 constants_gravity = 400
 constants_jumps_max = 2
+let hat_color = 8
+let body_color = 6
 jumps_made = 0
 traveled_height = 0
 width = 5
@@ -303,7 +308,13 @@ tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 traveled_height = sprite_player.y
 make_map(18, width, 5, 3)
 make_sign(2, 58, "Welcome to Jump!\\n" + "Press the left/right keys to move.\\n" + "Press A/up key to jump.\\n" + "Press B to read signs." + "")
-fade_out(2000, true)
+sprite_customization_icon = sprites.create(assets.image`customization_icon`, SpriteKind.Sign)
+tiles.placeOnTile(sprite_customization_icon, tiles.getTileLocation(17, 58))
+fade_out(2000, false)
+game.onUpdate(function () {
+    sprite_player.image.replace(6, body_color)
+    sprite_player.image.replace(8, hat_color)
+})
 forever(function () {
     if (levels_passed < 5) {
         effects.clouds.startScreenEffect(100)

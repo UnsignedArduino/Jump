@@ -19,6 +19,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "sign"
     },
+    "image5": {
+        "data": "hwQIAAgAAAAAAAAiAADQAgAA3w0A8A8AAP8AAPAPAAD/AAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "customization_icon"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",
