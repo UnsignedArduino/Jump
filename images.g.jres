@@ -14,6 +14,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "coin"
     },
+    "image4": {
+        "data": "hwQIAAgAAAAAAAAA4O7uAODv7wDg7u8A4O/v7uDv7gDg7+8A4O7uAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "sign"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

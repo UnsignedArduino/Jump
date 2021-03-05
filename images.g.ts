@@ -32,6 +32,17 @@ c d d 1 1 d d c
 . f d d d d f . 
 . . f f f f . . 
 `;
+            case "image4":
+            case "sign":return img`
+. . . . . . . . 
+. e e e e e e e 
+. e f e f f f e 
+. e e e e e e e 
+. e f f f e f e 
+. e e e e e e e 
+. . . . e . . . 
+. . . . e . . . 
+`;
         }
         return null;
     })

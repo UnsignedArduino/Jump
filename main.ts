@@ -1,5 +1,6 @@
 namespace SpriteKind {
     export const MovingPlatform = SpriteKind.create()
+    export const Sign = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumps_made < constants_jumps_max) {
@@ -44,6 +45,19 @@ function make_platform (left: number, width: number, height: number) {
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
+        for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
+            tiles.setTileAt(location, assets.tile`transparency8`)
+            tiles.setWallAt(location, false)
+        }
+        game.showLongText(sprites.readDataString(overlaping_of_kind(sprite_player, SpriteKind.Sign)[0], "text"), DialogLayout.Center)
+        for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
+            tiles.setTileAt(location, assets.tile`transparency8`)
+            tiles.setWallAt(location, false)
+        }
+    }
+})
 function make_trampoline (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`trampoline`)
@@ -74,6 +88,9 @@ function clear_map () {
     for (let sprite of sprites.allOfKind(SpriteKind.Food)) {
         sprite.destroy()
     }
+    for (let sprite of sprites.allOfKind(SpriteKind.Sign)) {
+        sprite.destroy()
+    }
 }
 scene.onOverlapTile(SpriteKind.MovingPlatform, assets.tile`transparency8`, function (sprite, location) {
     tiles.setTileAt(location, assets.tile`moving_platform`)
@@ -83,6 +100,11 @@ scene.onOverlapTile(SpriteKind.MovingPlatform, assets.tile`transparency8`, funct
         tiles.setWallAt(location, false)
     })
 })
+function make_sign (col: number, row: number, text: string) {
+    sprite_sign = sprites.create(assets.image`sign`, SpriteKind.Sign)
+    tiles.placeOnTile(sprite_sign, tiles.getTileLocation(col, row))
+    sprites.setDataString(sprite_sign, "text", text)
+}
 function fade_out (time: number, block: boolean) {
     color.startFade(color.Black, color.originalPalette, time)
     if (block) {
@@ -111,6 +133,15 @@ function make_transition (left: number, width: number, height: number) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`transition_block`)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
+}
+function overlaping_of_kind (sprite_overlap: Sprite, kind: number) {
+    local_sprites_overlapped = []
+    for (let sprite of sprites.allOfKind(kind)) {
+        if (sprite_overlap.overlapsWith(sprite)) {
+            local_sprites_overlapped.push(sprite)
+        }
+    }
+    return local_sprites_overlapped
 }
 function enable_controls (enable: boolean) {
     if (enable) {
@@ -231,7 +262,9 @@ let local_path = ""
 let sprite_moving_platform: Sprite = null
 let local_random = 0
 let local_start = 0
+let local_sprites_overlapped: Sprite[] = []
 let sprite_coin: Sprite = null
+let sprite_sign: Sprite = null
 let sprite_player: Sprite = null
 let double_platform_chance = 0
 let moving_platform_speed = 0
@@ -255,6 +288,7 @@ sprite_player = sprites.create(assets.image`front_facing`, SpriteKind.Player)
 animate_player(sprite_player)
 enable_controls(true)
 sprite_player.ay = constants_gravity
+sprite_player.z = 10
 info.setScore(0)
 tiles.setSmallTilemap(tilemap`starting_level`)
 scene.setBackgroundColor(9)
@@ -262,7 +296,8 @@ scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 traveled_height = sprite_player.y
 make_map(18, width, 5, 3)
-fade_out(2000, false)
+make_sign(2, 58, "Welcome to Jump!\\n" + "Press the left/right keys to move.\\n" + "Press A/up key to jump.\\n" + "Press B to read signs." + "")
+fade_out(2000, true)
 forever(function () {
     if (levels_passed < 5) {
         effects.clouds.startScreenEffect(100)
