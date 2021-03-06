@@ -134,6 +134,13 @@ function fade_in (time: number, block: boolean) {
         color.pauseUntilFadeDone()
     }
 }
+function wait_for_menu_select () {
+    selected_menu = false
+    while (!(selected_menu)) {
+        pause(100)
+    }
+    blockMenu.closeMenu()
+}
 function make_transition (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`transition_block`)
@@ -241,6 +248,9 @@ function animate_player (sprite: Sprite) {
     character.rule(Predicate.MovingDown)
     )
 }
+blockMenu.onMenuOptionSelected(function (option, index) {
+    selected_menu = true
+})
 function make_moving_platform (left: number, width: number, height: number, time: number) {
     sprite_moving_platform = sprites.create(assets.image`moving_platform_head`, SpriteKind.MovingPlatform)
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
@@ -269,6 +279,7 @@ let sprite_moving_platform: Sprite = null
 let local_random = 0
 let local_start = 0
 let local_sprites_overlapped: Sprite[] = []
+let selected_menu = false
 let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_col = 0
