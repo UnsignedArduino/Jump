@@ -3,7 +3,7 @@ namespace SpriteKind {
     export const Sign = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (jumps_made < constants_jumps_max) {
+    if (jumps_made < constants_jumps_max && can_jump) {
         jump(sprite_player, constants_gravity, 32)
         jumps_made += 1
     }
@@ -51,13 +51,20 @@ function make_platform (left: number, width: number, height: number) {
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (sprite_player.overlapsWith(sprite_customization_icon)) {
-    	
+        timer.throttle("activate_customizer", 100, function () {
+            enable_controls(false)
+            blockMenu.showMenu(["Cancel", "Change hat color", "Change skin color"], MenuStyle.List, MenuLocation.FullScreen)
+            wait_for_menu_select()
+            timer.after(100, function () {
+                enable_controls(true)
+            })
+        })
     } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
             tiles.setWallAt(location, false)
         }
-        game.showLongText(sprites.readDataString(overlaping_of_kind(sprite_player, SpriteKind.Sign)[0], "text"), DialogLayout.Center)
+        game.showLongText(sprites.readDataString(overlaping_of_kind(sprite_player, SpriteKind.Sign)[0], "text"), DialogLayout.Full)
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
             tiles.setWallAt(location, false)
@@ -81,7 +88,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky`, function (spr
     })
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (jumps_made < constants_jumps_max) {
+    if (jumps_made < constants_jumps_max && can_jump) {
         jump(sprite_player, constants_gravity, 32)
         jumps_made += 1
     }
@@ -162,6 +169,7 @@ function enable_controls (enable: boolean) {
     } else {
         controller.moveSprite(sprite_player, 0, 0)
     }
+    can_jump = enable
 }
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
@@ -290,6 +298,7 @@ let double_platform_chance = 0
 let moving_platform_speed = 0
 let width = 0
 let traveled_height = 0
+let can_jump = false
 let jumps_made = 0
 let constants_jumps_max = 0
 let constants_gravity = 0
@@ -298,6 +307,7 @@ constants_jumps_max = 2
 let hat_color = 8
 let body_color = 6
 jumps_made = 0
+can_jump = true
 traveled_height = 0
 width = 5
 moving_platform_speed = 10000
@@ -321,6 +331,7 @@ make_map(18, width, 5, 3)
 make_sign(2, 58, "Welcome to Jump!\\n" + "Press the left/right keys to move.\\n" + "Press A/up key to jump.\\n" + "Press B to read signs." + "")
 sprite_customization_icon = sprites.create(assets.image`customization_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_customization_icon, tiles.getTileLocation(17, 58))
+blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {
     sprite_player.image.replace(6, body_color)
