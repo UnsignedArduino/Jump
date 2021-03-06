@@ -61,6 +61,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                 local_color = ask_for_color()
                 if (local_color != -1) {
                     hat_color = local_color
+                    blockSettings.writeNumber("hat_color", hat_color)
                     fade_in(2000, true)
                     game.reset()
                 }
@@ -68,12 +69,15 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                 local_color = ask_for_color()
                 if (local_color != -1) {
                     body_color = local_color
+                    blockSettings.writeNumber("body_color", body_color)
                     fade_in(2000, true)
                     game.reset()
                 }
             } else if (blockMenu.selectedMenuIndex() == 3) {
                 hat_color = 8
                 body_color = 6
+                blockSettings.writeNumber("hat_color", hat_color)
+                blockSettings.writeNumber("body_color", body_color)
                 fade_in(2000, true)
                 game.reset()
             }
@@ -355,8 +359,16 @@ let constants_jumps_max = 0
 let constants_gravity = 0
 constants_gravity = 400
 constants_jumps_max = 2
-hat_color = 8
-body_color = 6
+if (blockSettings.exists("hat_color")) {
+    hat_color = blockSettings.readNumber("hat_color")
+} else {
+    hat_color = 8
+}
+if (blockSettings.exists("body_color")) {
+    body_color = blockSettings.readNumber("body_color")
+} else {
+    body_color = 6
+}
 jumps_made = 0
 can_jump = true
 traveled_height = 0
