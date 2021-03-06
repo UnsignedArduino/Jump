@@ -53,8 +53,30 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (sprite_player.overlapsWith(sprite_customization_icon)) {
         timer.throttle("activate_customizer", 100, function () {
             enable_controls(false)
-            blockMenu.showMenu(["Cancel", "Change hat color", "Change skin color"], MenuStyle.List, MenuLocation.FullScreen)
+            blockMenu.showMenu(["Cancel", "Change hat color", "Change skin color", "Reset look"], MenuStyle.List, MenuLocation.FullScreen)
             wait_for_menu_select()
+            if (blockMenu.selectedMenuOption().includes("Cancel")) {
+            	
+            } else if (blockMenu.selectedMenuIndex() == 1) {
+                local_color = ask_for_color()
+                if (local_color != -1) {
+                    hat_color = local_color
+                    fade_in(2000, true)
+                    game.reset()
+                }
+            } else if (blockMenu.selectedMenuIndex() == 2) {
+                local_color = ask_for_color()
+                if (local_color != -1) {
+                    body_color = local_color
+                    fade_in(2000, true)
+                    game.reset()
+                }
+            } else if (blockMenu.selectedMenuIndex() == 3) {
+                hat_color = 8
+                body_color = 6
+                fade_in(2000, true)
+                game.reset()
+            }
             timer.after(100, function () {
                 enable_controls(true)
             })
@@ -147,6 +169,32 @@ function wait_for_menu_select () {
         pause(100)
     }
     blockMenu.closeMenu()
+}
+function ask_for_color () {
+    blockMenu.showMenu([
+    "Cancel",
+    "White",
+    "Red",
+    "Pink",
+    "Orange",
+    "Yellow",
+    "Cyan",
+    "Green",
+    "Dark blue",
+    "Light blue",
+    "Purple",
+    "Light purple",
+    "Dark purple",
+    "Tan",
+    "Brown",
+    "Black"
+    ], MenuStyle.Grid, MenuLocation.FullScreen)
+    wait_for_menu_select()
+    if (blockMenu.selectedMenuOption().includes("Cancel")) {
+        return -1
+    } else {
+        return blockMenu.selectedMenuIndex()
+    }
 }
 function make_transition (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
@@ -290,6 +338,7 @@ let local_sprites_overlapped: Sprite[] = []
 let selected_menu = false
 let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
+let local_color = 0
 let local_col = 0
 let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
@@ -300,12 +349,14 @@ let width = 0
 let traveled_height = 0
 let can_jump = false
 let jumps_made = 0
+let body_color = 0
+let hat_color = 0
 let constants_jumps_max = 0
 let constants_gravity = 0
 constants_gravity = 400
 constants_jumps_max = 2
-let hat_color = 8
-let body_color = 6
+hat_color = 8
+body_color = 6
 jumps_made = 0
 can_jump = true
 traveled_height = 0
