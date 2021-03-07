@@ -43,17 +43,6 @@ c d d 1 1 d d c
 . . . . e . . . 
 . . . . e . . . 
 `;
-            case "image5":
-            case "customization_icon":return img`
-. . . . . . f . 
-. . . . . f f . 
-. . . . f f . . 
-. . . f f . . . 
-. . f f . . . . 
-. d d . . . . . 
-2 2 d . . . . . 
-2 . . . . . . . 
-`;
             case "image6":
             case "night_time_icon":return img`
 . . 1 1 1 1 . . 
@@ -75,6 +64,17 @@ c d d 1 1 d d c
 . 5 . . . . . . 
 . . . 5 . 5 . . 
 . . . . . . . . 
+`;
+            case "image5":
+            case "customization_icon":return img`
+. . . . . . e . 
+. . . . . e e . 
+. . . . e e . . 
+. . . e e . . . 
+. . e e . . . . 
+. d d . . . . . 
+2 2 d . . . . . 
+2 . . . . . . . 
 `;
         }
         return null;

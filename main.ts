@@ -135,7 +135,11 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function clear_map () {
-    tiles.setSmallTilemap(tilemap`next_levels`)
+    if (night_time) {
+        tiles.setSmallTilemap(tilemap`next_levels_night`)
+    } else {
+        tiles.setSmallTilemap(tilemap`next_levels`)
+    }
     for (let sprite of sprites.allOfKind(SpriteKind.MovingPlatform)) {
         sprite.destroy()
     }
@@ -329,6 +333,16 @@ function animate_player (sprite: Sprite) {
 blockMenu.onMenuOptionSelected(function (option, index) {
     selected_menu = true
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky_night`, function (sprite, location) {
+    sprite.setFlag(SpriteFlag.Ghost, true)
+    enable_controls(false)
+    timer.after(500, function () {
+        sprite.destroy()
+    })
+    timer.after(2000, function () {
+        game.over(false)
+    })
+})
 function make_moving_platform (left: number, width: number, height: number, time: number) {
     sprite_moving_platform = sprites.create(assets.image`moving_platform_head`, SpriteKind.MovingPlatform)
     tiles.placeOnTile(sprite_moving_platform, tiles.getTileLocation(0, height))
@@ -411,7 +425,11 @@ sprite_player.ay = constants_gravity
 sprite_player.z = 10
 info.setScore(0)
 tiles.setSmallTilemap(tilemap`starting_level`)
-scene.setBackgroundColor(9)
+if (night_time) {
+    scene.setBackgroundColor(15)
+} else {
+    scene.setBackgroundColor(9)
+}
 scene.cameraFollowSprite(sprite_player)
 tiles.placeOnTile(sprite_player, tiles.getTileLocation(1, 58))
 traveled_height = sprite_player.y
