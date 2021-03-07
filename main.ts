@@ -451,7 +451,7 @@ game.onUpdate(function () {
     sprite_player.image.replace(8, hat_color)
 })
 forever(function () {
-    if (levels_passed < 5) {
+    if (levels_passed < 5 && !(night_time)) {
         effects.clouds.startScreenEffect(100)
     }
     pause(1000 + levels_passed * 500)
