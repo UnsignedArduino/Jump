@@ -76,6 +76,21 @@ c d d 1 1 d d c
 2 2 d . . . . . 
 2 . . . . . . . 
 `;
+            case "image8":
+            case "star_1":return img`
+. 5 . 
+5 5 5 
+. 5 . 
+`;
+            case "image9":
+            case "star_2":return img`
+5 5 
+5 5 
+`;
+            case "image10":
+            case "star_3":return img`
+5 
+`;
         }
         return null;
     })

@@ -34,6 +34,21 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "customization_icon"
     },
+    "image8": {
+        "data": "hwQDAAMAAABQAAAAVQUAAFAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "star_1"
+    },
+    "image9": {
+        "data": "hwQCAAIAAABVAAAAVQAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "star_2"
+    },
+    "image10": {
+        "data": "hwQBAAEAAAAFAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "star_3"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

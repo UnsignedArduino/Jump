@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const MovingPlatform = SpriteKind.create()
     export const Sign = SpriteKind.create()
+    export const Star = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumps_made < constants_jumps_max && can_jump) {
@@ -292,6 +293,24 @@ function make_random (left: number, width: number, height: number) {
         make_moving_platform(left, width, height, moving_platform_speed)
     }
 }
+function make_stars (stars: number) {
+    for (let index = 0; index < stars; index++) {
+        if (Math.percentChance(33)) {
+            sprite_star = sprites.create(assets.image`star_1`, SpriteKind.Star)
+        } else if (Math.percentChance(50)) {
+            sprite_star = sprites.create(assets.image`star_2`, SpriteKind.Star)
+        } else {
+            sprite_star = sprites.create(assets.image`star_3`, SpriteKind.Star)
+        }
+        if (Math.percentChance(50)) {
+            sprite_star.image.replace(5, 1)
+        }
+        sprite_star.setFlag(SpriteFlag.Ghost, true)
+        sprite_star.setFlag(SpriteFlag.RelativeToCamera, true)
+        sprite_star.setPosition(randint(0, scene.screenWidth()), randint(0, scene.screenHeight()))
+        sprite_star.z = -100
+    }
+}
 function animate_player (sprite: Sprite) {
     character.loopFrames(
     sprite,
@@ -368,6 +387,7 @@ function make_moving_platform (left: number, width: number, height: number, time
 }
 let local_path = ""
 let sprite_moving_platform: Sprite = null
+let sprite_star: Sprite = null
 let local_random = 0
 let local_start = 0
 let local_sprites_overlapped: Sprite[] = []
@@ -427,6 +447,7 @@ info.setScore(0)
 tiles.setSmallTilemap(tilemap`starting_level`)
 if (night_time) {
     scene.setBackgroundColor(15)
+    make_stars(randint(20, 30))
 } else {
     scene.setBackgroundColor(9)
 }
