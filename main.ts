@@ -369,6 +369,7 @@ if (blockSettings.exists("body_color")) {
 } else {
     body_color = 6
 }
+let night_time = false
 jumps_made = 0
 can_jump = true
 traveled_height = 0
@@ -395,6 +396,8 @@ make_sign(2, 58, "Welcome to Jump!\\n \\n" + "Press the left/right keys to move.
 make_sign(4, 58, "Your high score is: " + info.highScore())
 sprite_customization_icon = sprites.create(assets.image`customization_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_customization_icon, tiles.getTileLocation(17, 58))
+let sprite_nighttime_mode = sprites.create(assets.image`night_time_icon`, SpriteKind.Sign)
+tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {

@@ -24,6 +24,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "customization_icon"
     },
+    "image6": {
+        "data": "hwQIAAgAAAAAEBEAAAARAQEAEAERABABEQARAREREQAQEQEAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "night_time_icon"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",
