@@ -85,6 +85,14 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                 enable_controls(true)
             })
         })
+    } else if (sprite_player.overlapsWith(sprite_nighttime_mode)) {
+        timer.throttle("switch_nighttime", 100, function () {
+            night_time = !(night_time)
+            write_bool("night_time", night_time)
+            enable_controls(false)
+            fade_in(2000, true)
+            game.reset()
+        })
     } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
@@ -113,6 +121,13 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky`, function (spr
         game.over(false)
     })
 })
+function write_bool (name: string, value: boolean) {
+    if (value) {
+        blockSettings.writeNumber(name, 1)
+    } else {
+        blockSettings.writeNumber(name, 0)
+    }
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumps_made < constants_jumps_max && can_jump) {
         jump(sprite_player, constants_gravity, 32)
@@ -149,6 +164,9 @@ function fade_out (time: number, block: boolean) {
     if (block) {
         color.pauseUntilFadeDone()
     }
+}
+function read_bool (name: string) {
+    return blockSettings.readNumber(name) == 1
 }
 function make_coin (col: number, row: number) {
     sprite_coin = sprites.create(assets.image`coin`, SpriteKind.Food)
@@ -344,6 +362,7 @@ let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_color = 0
 let local_col = 0
+let sprite_nighttime_mode: Sprite = null
 let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
 let levels_passed = 0
@@ -353,6 +372,7 @@ let width = 0
 let traveled_height = 0
 let can_jump = false
 let jumps_made = 0
+let night_time = false
 let body_color = 0
 let hat_color = 0
 let constants_jumps_max = 0
@@ -369,7 +389,11 @@ if (blockSettings.exists("body_color")) {
 } else {
     body_color = 6
 }
-let night_time = false
+if (blockSettings.exists("night_time")) {
+    night_time = read_bool("night_time")
+} else {
+    night_time = false
+}
 jumps_made = 0
 can_jump = true
 traveled_height = 0
@@ -396,7 +420,11 @@ make_sign(2, 58, "Welcome to Jump!\\n \\n" + "Press the left/right keys to move.
 make_sign(4, 58, "Your high score is: " + info.highScore())
 sprite_customization_icon = sprites.create(assets.image`customization_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_customization_icon, tiles.getTileLocation(17, 58))
-let sprite_nighttime_mode = sprites.create(assets.image`night_time_icon`, SpriteKind.Sign)
+if (night_time) {
+    sprite_nighttime_mode = sprites.create(assets.image`day_time_icon`, SpriteKind.Sign)
+} else {
+    sprite_nighttime_mode = sprites.create(assets.image`night_time_icon`, SpriteKind.Sign)
+}
 tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
