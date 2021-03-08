@@ -497,7 +497,7 @@ forever(function () {
         })
         pause(1000)
     } else {
-        if (levels_passed < 5 && false) {
+        if (levels_passed < 5) {
             effects.clouds.startScreenEffect(100)
         }
         pause(1000 + levels_passed * 500)
