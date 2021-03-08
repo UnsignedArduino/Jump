@@ -91,17 +91,6 @@ c d d 1 1 d d c
             case "star_3":return img`
 5 
 `;
-            case "image11":
-            case "stop_watch_icon":return img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 f f f . 
-. f 1 1 f 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`;
         }
         return null;
     })
@@ -213,116 +202,6 @@ b 5 3 5 5 1 5 b
 c 5 3 5 5 1 d c 
 c d d 1 1 d d c 
 . f d d d d f . 
-. . f f f f . . 
-. . . . . . . . 
-`];
-            case "stop_watch_animation":
-            case "anim8":return [img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 f f f . 
-. f 1 1 f 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 f 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 f f f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f 1 1 f f f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f 1 1 f 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f 1 1 f 1 f . 
-. f f 1 f f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f 1 f 1 1 f . 
-. f f f 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f 1 f 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 1 1 1 f . 
-. f f f 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f f f 1 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f 1 1 f f . 
-. f 1 f 1 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
-. . f f f f . . 
-. . . . . . . . 
-`, img`
-. . . f f . . . 
-. . f f f f . . 
-. f f f 1 f f . 
-. f 1 f 1 1 f . 
-. f 1 1 1 1 f . 
-. f f 1 1 f f . 
 . . f f f f . . 
 . . . . . . . . 
 `];
