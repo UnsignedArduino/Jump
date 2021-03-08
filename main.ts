@@ -447,7 +447,7 @@ info.setScore(0)
 tiles.setSmallTilemap(tilemap`starting_level`)
 if (night_time) {
     scene.setBackgroundColor(15)
-    make_stars(randint(20, 30))
+    make_stars(randint(30, 40))
 } else {
     scene.setBackgroundColor(9)
 }
@@ -472,8 +472,34 @@ game.onUpdate(function () {
     sprite_player.image.replace(8, hat_color)
 })
 forever(function () {
-    if (levels_passed < 5 && !(night_time)) {
-        effects.clouds.startScreenEffect(100)
+    if (night_time) {
+        if (Math.percentChance(1)) {
+            sprite_star = sprites.create(assets.image`star_1`, SpriteKind.Star)
+            if (Math.percentChance(50)) {
+                sprite_star.image.replace(5, 1)
+            }
+            sprite_star.setFlag(SpriteFlag.Ghost, true)
+            sprite_star.setFlag(SpriteFlag.RelativeToCamera, true)
+            sprite_star.z = -100
+            sprite_star.y = randint(0, scene.screenHeight())
+            if (Math.percentChance(50)) {
+                sprite_star.right = 0
+                sprite_star.vx = randint(80, 100)
+            } else {
+                sprite_star.left = scene.screenWidth()
+                sprite_star.vx = randint(-80, -100)
+            }
+            sprite_star.ay = 25
+            sprite_star.vy = -25
+        }
+        timer.after(100, function () {
+            sprite_star.setFlag(SpriteFlag.AutoDestroy, true)
+        })
+        pause(1000)
+    } else {
+        if (levels_passed < 5 && false) {
+            effects.clouds.startScreenEffect(100)
+        }
+        pause(1000 + levels_passed * 500)
     }
-    pause(1000 + levels_passed * 500)
 })
