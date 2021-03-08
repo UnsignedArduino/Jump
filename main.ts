@@ -428,6 +428,7 @@ if (blockSettings.exists("night_time")) {
 } else {
     night_time = false
 }
+let timed_mode = false
 jumps_made = 0
 can_jump = true
 traveled_height = 0
@@ -465,6 +466,14 @@ if (night_time) {
     sprite_nighttime_mode = sprites.create(assets.image`night_time_icon`, SpriteKind.Sign)
 }
 tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
+let sprite_timed_mode_icon = sprites.create(assets.image`stop_watch_icon`, SpriteKind.Sign)
+animation.runImageAnimation(
+sprite_timed_mode_icon,
+assets.animation`stop_watch_animation`,
+200,
+true
+)
+tiles.placeOnTile(sprite_timed_mode_icon, tiles.getTileLocation(13, 58))
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {
