@@ -59,6 +59,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "stop_watch_icon"
     },
+    "image13": {
+        "data": "hwQIAAgAAAAiAAAiIgIgIiAiIgIAIiIAACIiACAiIgIiAiAiIgAAIg==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "red_x"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

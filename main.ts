@@ -316,14 +316,19 @@ function update_disappearing (col: number, row: number, delay: number) {
     })
 }
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
-        tiles.setTileAt(location, assets.tile`transparency8`)
-        tiles.setWallAt(location, false)
-    }
-    scene.systemMenu.showSystemMenu()
+    if (timing) {
+        Notification.waitForNotificationFinish()
+        Notification.notify("Can't pause in timed mode!", 1, assets.image`red_x`)
+    } else {
+        for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
+            tiles.setTileAt(location, assets.tile`transparency8`)
+            tiles.setWallAt(location, false)
+        }
+        scene.systemMenu.showSystemMenu()
 for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
-        tiles.setTileAt(location, assets.tile`transparency8`)
-        tiles.setWallAt(location, false)
+            tiles.setTileAt(location, assets.tile`transparency8`)
+            tiles.setWallAt(location, false)
+        }
     }
 })
 function jump (sprite: Sprite, gravity: number, pixels: number) {
