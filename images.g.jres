@@ -49,6 +49,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "star_3"
     },
+    "image11": {
+        "data": "hwQIAAgAAAAiAAAiIPIvAvAiIg/wLBIP8CIiDyCyKwIi//8iAgAAIA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "reset_all_icon"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

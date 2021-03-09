@@ -104,6 +104,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             fade_in(2000, true)
             game.reset()
         })
+    } else if (sprite_player.overlapsWith(sprite_reset_all_icon)) {
+    	
     } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
@@ -445,6 +447,7 @@ let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_color = 0
 let local_col = 0
+let sprite_reset_all_icon: Sprite = null
 let sprite_nighttime_mode: Sprite = null
 let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
@@ -516,6 +519,8 @@ if (night_time) {
     sprite_nighttime_mode = sprites.create(assets.image`night_time_icon`, SpriteKind.Sign)
 }
 tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
+sprite_reset_all_icon = sprites.create(assets.image`reset_all_icon`, SpriteKind.Sign)
+tiles.placeOnTile(sprite_reset_all_icon, tiles.getTileLocation(13, 58))
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {

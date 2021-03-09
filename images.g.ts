@@ -91,6 +91,17 @@ c d d 1 1 d d c
             case "star_3":return img`
 5 
 `;
+            case "image11":
+            case "reset_all_icon":return img`
+2 . . . . . 2 2 
+2 2 f f f 2 2 . 
+. 2 2 c 2 2 f . 
+. f 2 2 2 b f . 
+. f 2 2 2 b f . 
+. 2 2 1 2 2 f . 
+2 2 f f f 2 2 . 
+2 . . . . . 2 2 
+`;
         }
         return null;
     })
