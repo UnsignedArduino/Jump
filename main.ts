@@ -38,11 +38,13 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     enable_controls(true)
                     width = Math.max(width - 0.25, 3)
                     moving_platform_speed = Math.max(moving_platform_speed - 1000, 3000)
+                    double_platform_chance = Math.max(double_platform_chance - 5, 10)
+                    disappearing_speed = Math.max(disappearing_speed - 100, 100)
                     levels_passed += 1
                 })
             })
         } else if (is_disappearing_tile(tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row))) {
-            update_disappearing(tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), 750)
+            update_disappearing(tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), disappearing_speed)
         }
     }
 })
@@ -445,6 +447,7 @@ let sprite_nighttime_mode: Sprite = null
 let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
 let levels_passed = 0
+let disappearing_speed = 0
 let double_platform_chance = 0
 let moving_platform_speed = 0
 let width = 0
@@ -479,6 +482,7 @@ traveled_height = 0
 width = 5
 moving_platform_speed = 10000
 double_platform_chance = 50
+disappearing_speed = 1000
 levels_passed = 0
 color.setPalette(
 color.Black
