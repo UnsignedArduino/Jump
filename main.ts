@@ -46,7 +46,7 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
 })
 function make_disappearing (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
-        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`block`)
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`disappearing_block`)
         tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
     }
 }
@@ -282,7 +282,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
 })
 function make_random (left: number, width: number, height: number) {
     local_random = randint(0, 100)
-    if (local_random < 50) {
+    if (local_random < 40) {
         make_platform(left, width, height)
         if (Math.percentChance(3)) {
             make_coin(randint(left + 1, left + width - 1), height - 1)
@@ -290,13 +290,18 @@ function make_random (left: number, width: number, height: number) {
         if (Math.percentChance(double_platform_chance)) {
             make_platform(left + randint(width, 20), width, height)
         }
-    } else if (local_random < 75) {
+    } else if (local_random < 60) {
         make_trampoline(left, width, height)
         if (Math.percentChance(3)) {
             make_coin(randint(left + 1, left + width - 1), height - 1)
         }
-    } else {
+    } else if (local_random < 80) {
         make_moving_platform(left, width, height, moving_platform_speed)
+    } else {
+        make_disappearing(left, width, height)
+        if (Math.percentChance(3)) {
+            make_coin(randint(left + 1, left + width - 1), height - 1)
+        }
     }
 }
 function make_stars (stars: number) {
