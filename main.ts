@@ -105,7 +105,19 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             game.reset()
         })
     } else if (sprite_player.overlapsWith(sprite_reset_all_icon)) {
-    	
+        timer.throttle("ask_reset_all", 100, function () {
+            if (game.ask("Are you sure you", "want to reset?")) {
+                if (game.ask("Are you REALLY sure", "you want to reset?")) {
+                    blockSettings.remove("hat_color")
+                    blockSettings.remove("body_color")
+                    blockSettings.remove("night_time")
+                    blockSettings.remove("high-score")
+                    enable_controls(false)
+                    fade_in(2000, true)
+                    game.reset()
+                }
+            }
+        })
     } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
