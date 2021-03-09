@@ -542,7 +542,9 @@ forever(function () {
             sprite_star.vy = -25
         }
         timer.after(100, function () {
-            sprite_star.setFlag(SpriteFlag.AutoDestroy, true)
+            if (sprite_star) {
+                sprite_star.setFlag(SpriteFlag.AutoDestroy, true)
+            }
         })
         pause(1000)
     } else {
