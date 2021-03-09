@@ -252,6 +252,22 @@ function enable_controls (enable: boolean) {
     }
     can_jump = enable
 }
+function update_disappearing (col: number, row: number) {
+    if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)) {
+        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_75`)
+    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_75`)) {
+        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_50`)
+    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_50`)) {
+        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_25`)
+    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_25`)) {
+        tiles.setWallAt(tiles.getTileLocation(col, row), false)
+        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_0`)
+        timer.after(3000, function () {
+            tiles.setWallAt(tiles.getTileLocation(col, row), true)
+            tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)
+        })
+    }
+}
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
         tiles.setTileAt(location, assets.tile`transparency8`)
