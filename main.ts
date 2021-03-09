@@ -112,10 +112,21 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                     blockSettings.remove("body_color")
                     blockSettings.remove("night_time")
                     blockSettings.remove("high-score")
+                    blockSettings.remove("timing")
                     enable_controls(false)
                     fade_in(2000, true)
                     game.reset()
                 }
+            }
+        })
+    } else if (sprite_player.overlapsWith(sprite_timed_mode_icon)) {
+        timer.throttle("toggle_timed_mode", 100, function () {
+            if (game.ask("Would you like to", "toggle timed mode?")) {
+                timing = !(timing)
+                write_bool("timing", timing)
+                enable_controls(false)
+                fade_in(2000, true)
+                game.reset()
             }
         })
     } else if (overlaping_of_kind(sprite_player, SpriteKind.Sign).length > 0) {
@@ -459,6 +470,7 @@ let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_color = 0
 let local_col = 0
+let sprite_timed_mode_icon: Sprite = null
 let sprite_reset_all_icon: Sprite = null
 let sprite_nighttime_mode: Sprite = null
 let sprite_customization_icon: Sprite = null
@@ -471,6 +483,7 @@ let width = 0
 let traveled_height = 0
 let can_jump = false
 let jumps_made = 0
+let timing = false
 let night_time = false
 let body_color = 0
 let hat_color = 0
@@ -492,6 +505,11 @@ if (blockSettings.exists("night_time")) {
     night_time = read_bool("night_time")
 } else {
     night_time = false
+}
+if (blockSettings.exists("timing")) {
+    timing = read_bool("timing")
+} else {
+    timing = false
 }
 jumps_made = 0
 can_jump = true
@@ -533,8 +551,16 @@ if (night_time) {
 tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
 sprite_reset_all_icon = sprites.create(assets.image`reset_all_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_reset_all_icon, tiles.getTileLocation(13, 58))
-let sprite_timed_mode_icon = sprites.create(assets.image`stop_watch_icon`, SpriteKind.Sign)
+sprite_timed_mode_icon = sprites.create(assets.image`stop_watch_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_timed_mode_icon, tiles.getTileLocation(11, 58))
+if (timing) {
+    animation.runImageAnimation(
+    sprite_timed_mode_icon,
+    assets.animation`stop_watch_moving_animation`,
+    100,
+    true
+    )
+}
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {
