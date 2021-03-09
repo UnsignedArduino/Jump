@@ -282,8 +282,10 @@ function update_disappearing (col: number, row: number, delay: number) {
             tiles.setWallAt(tiles.getTileLocation(col, row), false)
             tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_0`)
             timer.after(3000, function () {
-                tiles.setWallAt(tiles.getTileLocation(col, row), true)
-                tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)
+                if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_0`)) {
+                    tiles.setWallAt(tiles.getTileLocation(col, row), true)
+                    tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)
+                }
             })
         })
     })
