@@ -44,6 +44,12 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
         }
     }
 })
+function make_disappearing (left: number, width: number, height: number) {
+    for (let index = 0; index <= width - 1; index++) {
+        tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`block`)
+        tiles.setWallAt(tiles.getTileLocation(left + index, height), true)
+    }
+}
 function make_platform (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`block`)

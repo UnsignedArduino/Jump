@@ -11,15 +11,23 @@ namespace myTiles {
     //% fixedInstance jres blockIdentity=images._tile
     export const tile3 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
-    export const tile4 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
     export const tile5 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
-    export const tile8 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile6 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile7 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile9 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile4 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile10 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile11 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile12 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile13 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -148,7 +156,7 @@ namespace myTiles {
 ....................
 ....................
 ....................
-`, [myTiles.transparency8,myTiles.tile7], TileScale.Eight);
+`, [myTiles.transparency8,myTiles.tile1], TileScale.Eight);
             case "next_levels":
             case "level1":return tiles.createTilemap(hex`14003c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000101010101010101010101010101010101010101`, img`
 ....................
@@ -211,7 +219,7 @@ namespace myTiles {
 ....................
 ....................
 ....................
-`, [myTiles.transparency8,myTiles.tile6,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile8,myTiles.tile7], TileScale.Eight);
+`, [myTiles.transparency8,myTiles.tile6,myTiles.tile4,myTiles.tile5,myTiles.tile9,myTiles.tile10,myTiles.tile11,myTiles.tile12,myTiles.tile13], TileScale.Eight);
         }
         return null;
     })
@@ -226,16 +234,24 @@ namespace myTiles {
             case "tile2":return tile2;
             case "moving_platform":
             case "tile3":return tile3;
-            case "activated_trampoline":
-            case "tile4":return tile4;
             case "transition_block":
             case "tile5":return tile5;
-            case "myTile0":
-            case "tile8":return tile8;
             case "bottom_of_sky":
             case "tile6":return tile6;
             case "bottom_of_sky_night":
             case "tile7":return tile7;
+            case "disappearing_block":
+            case "tile9":return tile9;
+            case "activated_trampoline":
+            case "tile4":return tile4;
+            case "disappearing_block_75":
+            case "tile10":return tile10;
+            case "disappearing_block_50":
+            case "tile11":return tile11;
+            case "disappearing_block_25":
+            case "tile12":return tile12;
+            case "disappearing_block_0":
+            case "tile13":return tile13;
         }
         return null;
     })
