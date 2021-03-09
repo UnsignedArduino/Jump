@@ -148,14 +148,7 @@ function make_trampoline (left: number, width: number, height: number) {
     }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky`, function (sprite, location) {
-    sprite.setFlag(SpriteFlag.Ghost, true)
-    enable_controls(false)
-    timer.after(500, function () {
-        sprite.destroy()
-    })
-    timer.after(2000, function () {
-        game.over(false)
-    })
+    game_over()
 })
 function write_bool (name: string, value: boolean) {
     if (value) {
@@ -219,6 +212,27 @@ function make_coin (col: number, row: number) {
     tiles.placeOnTile(sprite_coin, tiles.getTileLocation(col, row))
     sprite_coin.y += -3
 }
+function game_over () {
+    sprite_player.setFlag(SpriteFlag.Ghost, true)
+    enable_controls(false)
+    timer.after(1000, function () {
+        sprite_player.destroy()
+    })
+    timer.after(2000, function () {
+        if (timing) {
+            time = spriteutils.roundWithPrecision((game.runtime() - start_time) / 1000, 3)
+            game.showLongText("Time: " + time + "s" + "\\nPoints: " + info.score() + "\\nHigh score: " + info.highScore() + "\\nPoints/second: " + spriteutils.roundWithPrecision(info.score() / time, 3), DialogLayout.Full)
+            timer.after(1000, function () {
+                game.over(false)
+            })
+        } else {
+            game.over(false)
+        }
+    })
+}
+info.onCountdownEnd(function () {
+	
+})
 function fade_in (time: number, block: boolean) {
     color.startFade(color.originalPalette, color.Black, time)
     if (block) {
@@ -318,7 +332,24 @@ function update_disappearing (col: number, row: number, delay: number) {
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     if (timing) {
         Notification.waitForNotificationFinish()
-        Notification.notify("Can't pause in timed mode!", 1, assets.image`red_x`)
+        Notification.notify("Can't pause in timed mode!", 1, img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
     } else {
         for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
             tiles.setTileAt(location, assets.tile`transparency8`)
@@ -432,14 +463,7 @@ blockMenu.onMenuOptionSelected(function (option, index) {
     selected_menu = true
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`bottom_of_sky_night`, function (sprite, location) {
-    sprite.setFlag(SpriteFlag.Ghost, true)
-    enable_controls(false)
-    timer.after(500, function () {
-        sprite.destroy()
-    })
-    timer.after(2000, function () {
-        game.over(false)
-    })
+    game_over()
 })
 function make_moving_platform (left: number, width: number, height: number, time: number) {
     sprite_moving_platform = sprites.create(assets.image`moving_platform_head`, SpriteKind.MovingPlatform)
@@ -471,6 +495,7 @@ let local_random = 0
 let local_start = 0
 let local_sprites_overlapped: Sprite[] = []
 let selected_menu = false
+let time = 0
 let sprite_coin: Sprite = null
 let sprite_sign: Sprite = null
 let local_color = 0
@@ -480,6 +505,7 @@ let sprite_reset_all_icon: Sprite = null
 let sprite_nighttime_mode: Sprite = null
 let sprite_customization_icon: Sprite = null
 let sprite_player: Sprite = null
+let start_time = 0
 let levels_passed = 0
 let disappearing_speed = 0
 let double_platform_chance = 0
@@ -524,6 +550,7 @@ moving_platform_speed = 10000
 double_platform_chance = 50
 disappearing_speed = 1000
 levels_passed = 0
+start_time = -1
 color.setPalette(
 color.Black
 )
@@ -568,9 +595,20 @@ if (timing) {
 }
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
+timer.background(function () {
+    while (!(controller.anyButton.isPressed() && !(controller.menu.isPressed()))) {
+        pause(100)
+    }
+    start_time = game.runtime()
+})
 game.onUpdate(function () {
     sprite_player.image.replace(6, body_color)
     sprite_player.image.replace(8, hat_color)
+})
+game.onUpdate(function () {
+    if (timing && start_time != -1) {
+        info.startCountdown(spriteutils.roundWithPrecision((game.runtime() - start_time) / 1000, 3))
+    }
 })
 forever(function () {
     if (night_time) {
