@@ -41,6 +41,8 @@ scene.onHitWall(SpriteKind.Player, function (sprite, location) {
                     levels_passed += 1
                 })
             })
+        } else if (is_disappearing_tile(tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row))) {
+            update_disappearing(tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), 750)
         }
     }
 })
@@ -229,6 +231,14 @@ function ask_for_color () {
         return blockMenu.selectedMenuIndex()
     }
 }
+function is_disappearing_tile (col: number, row: number) {
+    for (let tile of [assets.tile`disappearing_block`, assets.tile`disappearing_block_75`, assets.tile`disappearing_block_50`, assets.tile`disappearing_block_25`, assets.tile`disappearing_block_0`]) {
+        if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), tile)) {
+            return true
+        }
+    }
+    return false
+}
 function make_transition (left: number, width: number, height: number) {
     for (let index = 0; index <= width - 1; index++) {
         tiles.setTileAt(tiles.getTileLocation(left + index, height), assets.tile`transition_block`)
@@ -252,21 +262,29 @@ function enable_controls (enable: boolean) {
     }
     can_jump = enable
 }
-function update_disappearing (col: number, row: number) {
-    if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)) {
-        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_75`)
-    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_75`)) {
-        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_50`)
-    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_50`)) {
-        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_25`)
-    } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(col, row), assets.tile`disappearing_block_25`)) {
-        tiles.setWallAt(tiles.getTileLocation(col, row), false)
-        tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_0`)
-        timer.after(3000, function () {
-            tiles.setWallAt(tiles.getTileLocation(col, row), true)
+function update_disappearing (col: number, row: number, delay: number) {
+    timer.throttle("disappear_" + col + "x" + row, delay * 4 + 3000, function () {
+        timer.after(delay * 0, function () {
             tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)
         })
-    }
+        timer.after(delay * 1, function () {
+            tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_75`)
+        })
+        timer.after(delay * 2, function () {
+            tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_50`)
+        })
+        timer.after(delay * 3, function () {
+            tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_25`)
+        })
+        timer.after(delay * 4, function () {
+            tiles.setWallAt(tiles.getTileLocation(col, row), false)
+            tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block_0`)
+            timer.after(3000, function () {
+                tiles.setWallAt(tiles.getTileLocation(col, row), true)
+                tiles.setTileAt(tiles.getTileLocation(col, row), assets.tile`disappearing_block`)
+            })
+        })
+    })
 }
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     for (let location of tiles.getTilesByType(assets.tile`moving_platform`)) {
