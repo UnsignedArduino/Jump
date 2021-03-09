@@ -54,6 +54,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "reset_all_icon"
     },
+    "image12": {
+        "data": "hwQIAAgAAAAAAAAAAMzMAMAREQzMEREMzP8RDMAREQwAzMwAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "stop_watch_icon"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",

@@ -102,6 +102,17 @@ c d d 1 1 d d c
 2 2 f f f 2 2 . 
 2 . . . . . 2 2 
 `;
+            case "image12":
+            case "stop_watch_icon":return img`
+. . . c c . . . 
+. . c c c c . . 
+. c 1 1 f 1 c . 
+. c 1 1 f 1 c . 
+. c 1 1 1 1 c . 
+. c 1 1 1 1 c . 
+. . c c c c . . 
+. . . . . . . . 
+`;
         }
         return null;
     })

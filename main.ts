@@ -533,6 +533,8 @@ if (night_time) {
 tiles.placeOnTile(sprite_nighttime_mode, tiles.getTileLocation(15, 58))
 sprite_reset_all_icon = sprites.create(assets.image`reset_all_icon`, SpriteKind.Sign)
 tiles.placeOnTile(sprite_reset_all_icon, tiles.getTileLocation(13, 58))
+let sprite_timed_mode_icon = sprites.create(assets.image`stop_watch_icon`, SpriteKind.Sign)
+tiles.placeOnTile(sprite_timed_mode_icon, tiles.getTileLocation(11, 58))
 blockMenu.setColors(1, 15)
 fade_out(2000, false)
 game.onUpdate(function () {
